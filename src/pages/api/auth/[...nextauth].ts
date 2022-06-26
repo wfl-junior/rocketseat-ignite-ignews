@@ -14,12 +14,21 @@ export default NextAuth({
   callbacks: {
     async signIn({ user }) {
       try {
+        const matchExpression = q.Match(
+          q.Index("user_by_email"),
+          q.Casefold(user.email!),
+        );
+
         await fauna.query(
-          q.Create(q.Collection("users"), {
-            data: {
-              email: user.email,
-            },
-          }),
+          q.If(
+            q.Not(q.Exists(matchExpression)),
+            q.Create(q.Collection("users"), {
+              data: {
+                email: user.email!,
+              },
+            }),
+            q.Get(matchExpression),
+          ),
         );
 
         return true;
