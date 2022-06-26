@@ -20,7 +20,16 @@ export const config: PageConfig = {
   },
 };
 
-const relevantEvents = new Set(["checkout.session.completed"]);
+type RelevantEvent =
+  | "checkout.session.completed"
+  | "customer.subscription.updated"
+  | "customer.subscription.deleted";
+
+const relevantEvents = new Set<RelevantEvent>([
+  "checkout.session.completed",
+  "customer.subscription.updated",
+  "customer.subscription.deleted",
+]);
 
 const handler: NextApiHandler = async (request, response) => {
   if (request.method !== "POST") {
@@ -49,17 +58,30 @@ const handler: NextApiHandler = async (request, response) => {
     return response.status(400).json(error);
   }
 
-  const { type } = event;
-
-  if (relevantEvents.has(type)) {
+  if (relevantEvents.has(event.type as any)) {
     try {
+      const type = event.type as RelevantEvent;
+
       switch (type) {
+        case "customer.subscription.updated":
+        case "customer.subscription.deleted": {
+          const subscription = event.data.object as Stripe.Subscription;
+
+          await saveSubscription(
+            subscription.id,
+            subscription.customer.toString(),
+            false,
+          );
+
+          break;
+        }
         case "checkout.session.completed": {
           const checkoutSession = event.data.object as Stripe.Checkout.Session;
 
           await saveSubscription(
             checkoutSession.subscription!.toString(),
             checkoutSession.customer!.toString(),
+            true,
           );
 
           break;
