@@ -1,10 +1,15 @@
+import Link from "next/link";
 import { SignInButton } from "../SignInButton";
 import styles from "./styles.module.scss";
 
 export const Header: React.FC = () => (
   <header className={styles.container}>
     <div className={styles.content}>
-      <img src="/images/logo.svg" alt="ig.news logo" />
+      <Link href="/">
+        <a>
+          <img src="/images/logo.svg" alt="ig.news logo" />
+        </a>
+      </Link>
 
       <nav>
         <a href="#" className={styles.active}>
