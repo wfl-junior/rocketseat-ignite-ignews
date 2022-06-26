@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { Fragment } from "react";
 import { SubscribeButton } from "../components/SubscribeButton";
@@ -13,12 +13,13 @@ interface HomeProps {
   };
 }
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
   const response = await stripe.prices.retrieve(
     process.env.STRIPE_PRODUCT_PRICE_ID,
   );
 
   return {
+    revalidate: 60 * 60 * 24, // 24 hours
     props: {
       product: {
         id: response.id,
@@ -57,4 +58,5 @@ const Home: NextPage<HomeProps> = ({ product }) => (
     </main>
   </Fragment>
 );
+
 export default Home;
