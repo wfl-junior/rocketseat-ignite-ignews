@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
       product: {
         id: response.id,
         priceFormatted: formatPrice(
-          (response.unit_amount || 9.9) / 100,
+          (response.unit_amount || 990) / 100,
           response.currency,
         ),
       },
