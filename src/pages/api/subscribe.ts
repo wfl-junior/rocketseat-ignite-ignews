@@ -13,7 +13,8 @@ const handler: NextApiHandler = async (request, response) => {
   const session = await getSession({ req: request });
 
   const stripeCustomer = await stripe.customers.create({
-    email: session!.user!.email!,
+    email: session?.user?.email!,
+    name: session?.user?.name!,
   });
 
   const stripeCheckoutSession = await stripe.checkout.sessions.create({
