@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { Fragment } from "react";
+import { Header } from "../components/Header";
 import "../styles/global.scss";
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => {
@@ -11,6 +12,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
         <title>ig.news</title>
       </Head>
 
+      <Header />
       <Component {...pageProps} />
     </Fragment>
   );
