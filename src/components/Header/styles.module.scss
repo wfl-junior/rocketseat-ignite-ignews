@@ -12,7 +12,7 @@
   display: flex;
   align-items: center;
 
-  nav {
+  > nav {
     margin-left: 5rem;
     height: 100%;
 
@@ -49,5 +49,9 @@
         background-color: var(--yellow-500);
       }
     }
+  }
+
+  > button {
+    margin-left: auto;
   }
 }
