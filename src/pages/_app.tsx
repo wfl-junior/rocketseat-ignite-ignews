@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import { Fragment } from "react";
@@ -12,8 +13,10 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
         <title>ig.news</title>
       </Head>
 
-      <Header />
-      <Component {...pageProps} />
+      <SessionProvider>
+        <Header />
+        <Component {...pageProps} />
+      </SessionProvider>
     </Fragment>
   );
 };
