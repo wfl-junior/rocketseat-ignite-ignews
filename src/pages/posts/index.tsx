@@ -1,7 +1,27 @@
-import { NextPage } from "next";
+import Prismic from "@prismicio/client";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { Fragment } from "react";
+import { getPrismicClient } from "../../services/prismic";
 import styles from "../../styles/Posts.module.scss";
+
+export const getStaticProps: GetStaticProps = async () => {
+  const prismic = getPrismicClient();
+
+  const response = await prismic.query(
+    Prismic.predicates.at("document.type", "Post"),
+    {
+      fetch: ["Post.title", "Post.content"],
+      pageSize: 100,
+    },
+  );
+
+  console.log(response);
+
+  return {
+    props: {},
+  };
+};
 
 const Posts: NextPage = () => (
   <Fragment>
