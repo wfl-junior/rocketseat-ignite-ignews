@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ActiveLink } from "../ActiveLink";
 import { SignInButton } from "../SignInButton";
 import styles from "./styles.module.scss";
 
@@ -12,13 +13,13 @@ export const Header: React.FC = () => (
       </Link>
 
       <nav>
-        <Link href="/">
-          <a className={styles.active}>Home</a>
-        </Link>
+        <ActiveLink activeClassName={styles.active} href="/">
+          <a>Home</a>
+        </ActiveLink>
 
-        <Link href="/posts" prefetch>
+        <ActiveLink activeClassName={styles.active} href="/posts">
           <a>Posts</a>
-        </Link>
+        </ActiveLink>
       </nav>
 
       <SignInButton />
