@@ -21,9 +21,13 @@ interface PostPreviewProps {
   post: PostData;
 }
 
+type PostPreviewParams = {
+  slug: string;
+};
+
 export const getStaticProps: GetStaticProps<
   PostPreviewProps,
-  { slug: string }
+  PostPreviewParams
 > = async ({ params }) => {
   const prismic = getPrismicClient();
   const { slug } = params!;
@@ -39,13 +43,14 @@ export const getStaticProps: GetStaticProps<
   };
 
   return {
+    revalidate: 60 * 30, // 30 minutes
     props: {
       post,
     },
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths<PostPreviewParams> = async () => {
   return {
     paths: [],
     fallback: "blocking",
