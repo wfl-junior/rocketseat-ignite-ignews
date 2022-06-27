@@ -5,6 +5,7 @@ import { RichText } from "prismic-dom";
 import { Fragment } from "react";
 import { getPrismicClient } from "../../services/prismic";
 import styles from "../../styles/Post.module.scss";
+import { formatUpdatedAt } from "../../utils/formatUpdatedAt";
 
 interface Post {
   slug: string;
@@ -23,8 +24,17 @@ export const getServerSideProps: GetServerSideProps<
   { slug: string }
 > = async ({ req, params }) => {
   const session = await getSession({ req });
-  const prismic = getPrismicClient(req);
 
+  if (!session?.activeSubscription) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  const prismic = getPrismicClient(req);
   const { slug } = params!;
   const response = await prismic.getByUID("post", slug, {});
   const updatedAt = new Date(response.last_publication_date!);
@@ -34,11 +44,7 @@ export const getServerSideProps: GetServerSideProps<
     title: RichText.asText(response.data.title),
     content: RichText.asHtml(response.data.content),
     updatedAtDateTime: updatedAt.toLocaleString(),
-    updatedAtFormatted: updatedAt.toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-    }),
+    updatedAtFormatted: formatUpdatedAt(updatedAt),
   };
 
   return {
@@ -51,7 +57,8 @@ export const getServerSideProps: GetServerSideProps<
 const Post: NextPage<PostProps> = ({ post }) => (
   <Fragment>
     <Head>
-      <title>{post.title} | ig.news</title>
+      {/* post.title provocando warning */}
+      <title>Post | ig.news</title>
     </Head>
 
     <main className={styles.container}>

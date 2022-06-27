@@ -6,6 +6,7 @@ import { RichText } from "prismic-dom";
 import { Fragment } from "react";
 import { getPrismicClient } from "../../services/prismic";
 import styles from "../../styles/Posts.module.scss";
+import { formatUpdatedAt } from "../../utils/formatUpdatedAt";
 
 interface Content {
   type: string;
@@ -46,11 +47,7 @@ export const getStaticProps: GetStaticProps<PostsProps> = async () => {
           content => content.type === "paragraph",
         )?.text ?? "Sem texto",
       updatedAtDateTime: updatedAt.toLocaleString(),
-      updatedAtFormatted: updatedAt.toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }),
+      updatedAtFormatted: formatUpdatedAt(updatedAt),
     };
   });
 
