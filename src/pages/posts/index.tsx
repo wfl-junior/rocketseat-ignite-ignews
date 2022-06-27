@@ -1,6 +1,7 @@
 import Prismic from "@prismicio/client";
 import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { RichText } from "prismic-dom";
 import { Fragment } from "react";
 import { getPrismicClient } from "../../services/prismic";
@@ -15,7 +16,7 @@ interface Post {
   slug: string;
   title: string;
   excerpt: string;
-  updatedAt: string;
+  updatedAtDateTime: string;
   updatedAtFormatted: string;
 }
 
@@ -44,7 +45,7 @@ export const getStaticProps: GetStaticProps<PostsProps> = async () => {
         (post.data.content as Content[]).find(
           content => content.type === "paragraph",
         )?.text ?? "Sem texto",
-      updatedAt: updatedAt.toLocaleString(),
+      updatedAtDateTime: updatedAt.toLocaleString(),
       updatedAtFormatted: updatedAt.toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "long",
@@ -69,11 +70,16 @@ const Posts: NextPage<PostsProps> = ({ posts }) => (
     <main className={styles.container}>
       <div className={styles.posts}>
         {posts.map(post => (
-          <a key={post.slug} href="#">
-            <time dateTime={post.updatedAt}>{post.updatedAtFormatted}</time>
-            <strong>{post.title}</strong>
-            <p>{post.excerpt}</p>
-          </a>
+          <Link key={post.slug} href={`/posts/${post.slug}`}>
+            <a>
+              <time dateTime={post.updatedAtDateTime}>
+                {post.updatedAtFormatted}
+              </time>
+
+              <strong>{post.title}</strong>
+              <p>{post.excerpt}</p>
+            </a>
+          </Link>
         ))}
       </div>
     </main>
