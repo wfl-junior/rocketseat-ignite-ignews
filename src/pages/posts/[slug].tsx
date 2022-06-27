@@ -7,7 +7,7 @@ import { getPrismicClient } from "../../services/prismic";
 import styles from "../../styles/Post.module.scss";
 import { formatUpdatedAt } from "../../utils/formatUpdatedAt";
 
-interface Post {
+interface PostData {
   slug: string;
   title: string;
   content: string;
@@ -16,7 +16,7 @@ interface Post {
 }
 
 interface PostProps {
-  post: Post;
+  post: PostData;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps<
   const response = await prismic.getByUID("post", slug, {});
   const updatedAt = new Date(response.last_publication_date!);
 
-  const post: Post = {
+  const post: PostData = {
     slug,
     title: RichText.asText(response.data.title),
     content: RichText.asHtml(response.data.content),
@@ -57,8 +57,8 @@ export const getServerSideProps: GetServerSideProps<
 const Post: NextPage<PostProps> = ({ post }) => (
   <Fragment>
     <Head>
-      {/* post.title provocando warning */}
-      <title>Post | ig.news</title>
+      {/* post.title provocando warning fora de string única */}
+      <title>{`${post.title} | ig.news`}</title>
     </Head>
 
     <main className={styles.container}>
