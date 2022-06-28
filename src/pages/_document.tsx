@@ -15,6 +15,7 @@ export default function Document() {
           rel="stylesheet"
         />
 
+        <meta name="author" content="Wallace Júnior | wflj1997@gmail.com" />
         <link rel="shortcut icon" href="/favicon.png" type="image/png" />
       </Head>
 
