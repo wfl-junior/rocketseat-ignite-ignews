@@ -8,7 +8,10 @@ jest.mock("next/router", () => ({
 }));
 
 jest.mock("next-auth/react", () => ({
-  useSession: () => [null, false],
+  useSession: () => ({
+    data: null,
+    status: "unauthenticated",
+  }),
 }));
 
 describe("Header component", () => {
