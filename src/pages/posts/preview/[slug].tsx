@@ -9,7 +9,7 @@ import { getPrismicClient } from "../../../services/prismic";
 import styles from "../../../styles/Post.module.scss";
 import { formatUpdatedAt } from "../../../utils/formatUpdatedAt";
 
-interface PostData {
+export interface PostData {
   slug: string;
   title: string;
   content: string;
