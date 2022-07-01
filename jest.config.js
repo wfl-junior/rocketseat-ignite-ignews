@@ -9,7 +9,7 @@ module.exports = {
     "\\.(css|scss|sass)$": "identity-obj-proxy",
   },
   collectCoverage: true,
-  collectCoveragefrom: [
+  collectCoverageFrom: [
     "src/**/*.tsx",
     "!src/**/*.spec.tsx",
     "!src/pages/_app.tsx",
