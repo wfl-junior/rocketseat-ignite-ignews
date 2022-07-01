@@ -13,7 +13,7 @@ interface Content {
   text: string;
 }
 
-interface Post {
+export interface Post {
   slug: string;
   title: string;
   excerpt: string;
