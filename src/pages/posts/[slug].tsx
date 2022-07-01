@@ -7,8 +7,7 @@ import { getPrismicClient } from "../../services/prismic";
 import styles from "../../styles/Post.module.scss";
 import { formatUpdatedAt } from "../../utils/formatUpdatedAt";
 
-interface PostData {
-  slug: string;
+export interface PostData {
   title: string;
   content: string;
   updatedAtDateTime: string;
@@ -39,17 +38,14 @@ export const getServerSideProps: GetServerSideProps<
   const response = await prismic.getByUID("post", slug, {});
   const updatedAt = new Date(response.last_publication_date!);
 
-  const post: PostData = {
-    slug,
-    title: RichText.asText(response.data.title),
-    content: RichText.asHtml(response.data.content),
-    updatedAtDateTime: updatedAt.toLocaleString(),
-    updatedAtFormatted: formatUpdatedAt(updatedAt),
-  };
-
   return {
     props: {
-      post,
+      post: {
+        title: RichText.asText(response.data.title),
+        content: RichText.asHtml(response.data.content),
+        updatedAtDateTime: updatedAt.toLocaleString(),
+        updatedAtFormatted: formatUpdatedAt(updatedAt),
+      },
     },
   };
 };
